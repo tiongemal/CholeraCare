@@ -7,11 +7,13 @@
     <title>CholeraCare</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
     <link rel="icon" href="/path/to/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/main.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
   </head>
   <body>
@@ -19,33 +21,56 @@
       <div class="container d-flex flex-column flex-md-row align-items-center p-3">
         <h4 class="my-0 mr-md-auto font-weight-normal"><a href="/" class="text-white">CholeraCare</a></h4>
         @auth
-        <div class="flex-row my-3 my-md-0">
-            <a href="#" class="text-white mr-2 header-search-icon" title="Search" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-search"></i></a>
-            <span class="text-white mr-2 header-chat-icon" title="Chat" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-comment"></i></span>
-            <a href="#" class="mr-2"><img title="My Profile" data-toggle="tooltip" data-placement="bottom" style="width: 32px; height: 32px; border-radius: 16px" src="https://gravatar.com/avatar/f64fc44c03a8a7eb1d52502950879659?s=128" /></a>
-            <a class="btn btn-sm btn-success mr-2" href="/create-post">Create Post</a>
-            <form action="/logout" method="POST" class="d-inline">
-                @csrf
-              <button class="btn btn-sm btn-secondary">Sign Out</button>
-            </form>
-          </div>
+            @if(Auth::user()->role === 'admin')
+                <div class="flex-row my-3 my-md-0">
+                    {{-- <form action="/search" method="POST" class="mb-0 pt-2 pt-md-0">
+                        @csrf
+                        <div class="row align-items-center">
+                        <div class="col-md mr-0 pr-md-0 mb-3 mb-md-0">
+                          <input name="search" class="form-control form-control-sm input-dark" type="text" placeholder="search users" autocomplete="off" />
+                        </div>
+                        <div class="col-md-auto">
+                            <button class="btn btn-primary btn-sm">Search</button>
+                        </div>
+                    </form> --}}
+                    <a class="btn btn-sm btn-success mr-2" href="/home">Home</a>
+                    <a class="btn btn-sm btn-success mr-2" href="/dashboard/admin">Dashboard</a>
+                    <a class="btn btn-sm btn-success mr-2" href="/register">Register User</a>
+                    <form action="/logout" method="POST" class="d-inline">
+                        @csrf
+                      <button class="btn btn-sm btn-secondary">Sign Out</button>
+                    </form>
+                  </div>
+
+            @elseif(Auth::user()->role === 'field_staff')
+                <div class="flex-row my-3 my-md-0">
+                     <a class="btn btn-sm btn-success mr-2" href="/reports">reports</a>
+                    <a class="btn btn-sm btn-success mr-2" href="/data-sync">sync reports</a>
+
+                    <a class="btn btn-sm btn-success mr-2" href="{{route('report')}}">Create report</a>
+                    <form action="/logout" method="POST" class="d-inline">
+                        @csrf
+                      <button class="btn btn-sm btn-secondary">Sign Out</button>
+                    </form>
+                  </div>
+
+
+            @elseif(Auth::user()->role === 'hq_staff')
+                <div class="flex-row my-3 my-md-0">
+                    <a class="btn btn-sm btn-success mr-2" href="{{route('reports')}}">Reports</a>
+                    <a class="btn btn-sm btn-success mr-2" href="/charts">Charts</a>
+                    <a class="btn btn-sm btn-success mr-2" href="/restocknotifications">Requests</a>
+                    <form action="/logout" method="POST" class="d-inline">
+                        @csrf
+                      <button class="btn btn-sm btn-secondary">Sign Out</button>
+                    </form>
+                  </div>
+
+            @endif
 
         @else
-        <form action="/login" method="POST" class="mb-0 pt-2 pt-md-0">
-            @csrf
-            <div class="row align-items-center">
-            <div class="col-md mr-0 pr-md-0 mb-3 mb-md-0">
-              <input name="loginusername" class="form-control form-control-sm input-dark" type="text" placeholder="Username" autocomplete="off" />
-
-            </div>
-            <div class="col-md mr-0 pr-md-0 mb-3 mb-md-0">
-              <input name="loginpassword" class="form-control form-control-sm input-dark" type="password" placeholder="Password" />
-            </div>
-            <div class="col-md-auto">
-              <button class="btn btn-primary btn-sm">Sign In</button>
-            </div>
-          </div>
-        </form>
+        <a class="btn btn-sm btn-success mr-2" href="/homepage">Home</a>
+        <a class="btn btn-sm btn-success mr-2" href="/loginpage">Login</a>
         @endauth
 
       </div>

@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('asscheeks', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('supplies', function (Blueprint $table) {
+            $table->softDeletes(); // This will add a 'deleted_at' column
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('asscheeks');
+        Schema::table('supplies', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 };

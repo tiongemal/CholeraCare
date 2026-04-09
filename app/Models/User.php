@@ -2,43 +2,52 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable; // Extend from Authenticatable
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable // Corrected the class to extend from Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = 'users';
+    protected $primaryKey = 'user_id';
+
     protected $fillable = [
-        'username',
+        'fullname',
+        'password',
         'email',
-        'password',
+        'role',
+        'location_id',
+        'status'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    // Relationship: A user (field staff) belongs to one location
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // Relationship: A field worker can have multiple daily reports
+    public function dailyReports()
+    {
+        return $this->hasMany(DailyReport::class, 'field_worker_id');
+    }
+
+    // Relationship: Communication logs
+    public function sentMessages()
+    {
+        return $this->hasMany(CommunicationLog::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(CommunicationLog::class, 'receiver_id');
+    }
+
+    public function restockRequests()
+{
+    return $this->hasMany(RestockRequest::class);
+}
+
 }

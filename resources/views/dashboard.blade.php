@@ -1,11 +1,4 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+
     @include('components.header')
 
     <div class="d-flex" id="wrapper">
@@ -36,20 +29,6 @@
         <!-- /#page-content-wrapper -->
     </div>
 
-    <!-- Bootstrap JS (optional, include these at the end of your page for faster load times) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.2/js/bootstrap.min.js"></script>
-
-    <!-- Optional JavaScript to toggle the sidebar -->
-    <script>
-        document.getElementById("menu-toggle").addEventListener("click", function() {
-            document.getElementById("wrapper").classList.toggle("toggled");
-        });
-    </script>
-
-
 
     @include('components.footer')
-</body>
-</html>
+

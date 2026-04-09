@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('restock_requests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('supply_id')->constrained('supplies', 'supply_id')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade'); // User requesting restock
+            $table->integer('quantity_left');
             $table->timestamps();
-            $table->string('title');
-            $table->longText('body');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('restock_requests');
     }
 };

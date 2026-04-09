@@ -1,0 +1,10 @@
+run "php artisan serve" to start server
+open server using the url "http://127.0.0.1:8000" in your local browser
+
+run "php artisan migrate" to run database migrations but with empty database 
+or its more advisable that you import the choleracare database named "assignment" saved 
+in the database file of my project folder into your xamp phpmyadmin since it contains data and users already
+
+login using the following details 
+email: admin@gmail.com.
+password: admin001.
